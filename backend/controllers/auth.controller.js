@@ -67,15 +67,31 @@ export const login = async (req, res) => {
   }
 };
 
+// export const logout = (req, res) => {
+//   try {
+//     res.cookie("token", "");
+//     res.status(200).json({ message: "User logged out successfully" });
+//   } catch (error) {
+//     console.log("Error in logout controller", error.message);
+//     res.status(500).json({ message: "Internal Server Error" });
+//   }
+// };
+
 export const logout = (req, res) => {
   try {
-    res.cookie("token", "");
+    res.clearCookie("token", {
+      httpOnly: true,
+      sameSite: "none",  // must match how you set it
+      secure: process.env.NODE_ENV !== "development", // must match how you set it
+    });
+
     res.status(200).json({ message: "User logged out successfully" });
   } catch (error) {
     console.log("Error in logout controller", error.message);
     res.status(500).json({ message: "Internal Server Error" });
   }
 };
+
 
 export const update = async (req, res) => {
   try {
